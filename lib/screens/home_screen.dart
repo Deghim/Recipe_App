@@ -91,32 +91,107 @@ class RecipeForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    final TextEditingController _recipeName = TextEditingController();
+    final TextEditingController _recipeAuthor = TextEditingController();
+    final TextEditingController _recipeIMG = TextEditingController();
+    final TextEditingController _recipeDescritio = TextEditingController();
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Form(
-        // key: _FormKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Add New Recipe',
-              style: TextStyle(color: Colors.green, fontSize: 24),
-            ),
-            SizedBox(height: 16),
-            _buildTextField(label: 'Recipe Name'),
-            SizedBox(height: 8),
-            _buildTextField(label: 'Author '),
-            SizedBox(height: 8),
-            _buildTextField(label: 'Img URL'),
-            SizedBox(height: 8),
-            _buildTextField(label: 'Recipe'),
-          ],
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Add New Recipe',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 8),
+              _buildTextField(
+                controller: _recipeName,
+                label: 'Recipe Name',
+                validator: (value) {
+                  return (value == null || value.isEmpty)
+                      ? "Invalid Input"
+                      : null;
+                },
+              ),
+              SizedBox(height: 4),
+              _buildTextField(
+                controller: _recipeAuthor,
+                label: 'Author ',
+                validator: (value) {
+                  return (value == null || value.isEmpty)
+                      ? "Invalid Input"
+                      : null;
+                },
+              ),
+              SizedBox(height: 4),
+              _buildTextField(
+                controller: _recipeIMG,
+                label: 'Img URL',
+                validator: (value) {
+                  return (value == null || value.isEmpty)
+                      ? "Invalid Input"
+                      : null;
+                },
+              ),
+              SizedBox(height: 4),
+              _buildTextField(
+                controller: _recipeDescritio,
+                label: 'Recipe',
+                validator: (value) {
+                  return (value == null || value.isEmpty)
+                      ? "Invalid Input"
+                      : null;
+                },
+                maxLines: 4,
+              ),
+              SizedBox(height: 8),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    "Save Recipe",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTextField({required String label}) {
+  Widget _buildTextField({
+    required String label,
+    required TextEditingController controller,
+    required String? Function(String?) validator,
+    int maxLines = 1,
+  }) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: label,
@@ -127,6 +202,9 @@ class RecipeForm extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      validator: validator,
+      controller: controller,
+      maxLines: maxLines,
     );
   }
 }
