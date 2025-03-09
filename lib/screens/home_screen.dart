@@ -6,7 +6,21 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: Column(
+        children: <Widget>[
+          _RecipesCard(context),
+          _RecipesCard(context),
+          _RecipesCard(context),
+          _RecipesCard(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _RecipesCard(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
         width:
             MediaQuery.of(context)
                 .size
@@ -18,17 +32,30 @@ class HomeScreen extends StatelessWidget {
               Container(
                 height: 125,
                 width: 100,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.green,
                 ),
               ),
               SizedBox(width: 20),
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Lasagna"),
-                  Text("Jorge U. Chavira"),
+                  Text(
+                    "Lasagna",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Quicksand',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   Container(height: 1, width: 75, color: Colors.green),
+                  SizedBox(height: 4),
+                  Text(
+                    "Jorge U. Chavira",
+                    style: TextStyle(fontSize: 16, fontFamily: 'Quicksand'),
+                  ),
                 ],
               ),
             ],
