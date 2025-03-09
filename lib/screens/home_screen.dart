@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,6 +10,27 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[_RecipesCard(context), _RecipesCard(context)],
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        child: Icon(CupertinoIcons.add, color: Colors.white),
+        onPressed: () {
+          _showBottom(context);
+        },
+      ),
+    );
+  }
+
+  Future<void> _showBottom(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (contexto) {
+        return Container(
+          height: 500,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.white,
+          child: RecipeForm(),
+        );
+      },
     );
   }
 
@@ -58,6 +80,51 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class RecipeForm extends StatelessWidget {
+  const RecipeForm({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Form(
+        // key: _FormKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Add New Recipe',
+              style: TextStyle(color: Colors.green, fontSize: 24),
+            ),
+            SizedBox(height: 16),
+            _buildTextField(label: 'Recipe Name'),
+            SizedBox(height: 8),
+            _buildTextField(label: 'Author '),
+            SizedBox(height: 8),
+            _buildTextField(label: 'Img URL'),
+            SizedBox(height: 8),
+            _buildTextField(label: 'Recipe'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({required String label}) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(fontFamily: 'Quicksand', color: Colors.green),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.green, width: 1),
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );
