@@ -7,12 +7,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: <Widget>[
-          _RecipesCard(context),
-          _RecipesCard(context),
-          _RecipesCard(context),
-          _RecipesCard(context),
-        ],
+        children: <Widget>[_RecipesCard(context), _RecipesCard(context)],
       ),
     );
   }
@@ -32,9 +27,12 @@ class HomeScreen extends StatelessWidget {
               Container(
                 height: 125,
                 width: 100,
-                decoration: BoxDecoration(
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.green,
+                  child: Image.network(
+                    'https://static.platzi.com/media/uploads/flutter_lasana_b894f1aee1.jpg',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               SizedBox(width: 20),
