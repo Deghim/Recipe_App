@@ -1,12 +1,23 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:recipe_book/screens/recipe_detail.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  Future<List<dynamic>> FetchRecipes() async {
+    final url = Uri.parse("https://c5332eb5-1486-4627-acf2-d6c0f27e6fa4.mock.pstmn.io/recipe");
+    final response = await http.get(url);
+    final data = jsonDecode(response.body);
+    return data['recipe'];
+  }
+
   @override
   Widget build(BuildContext context) {
+    FetchRecipes();
     return Scaffold(
       body: Column(
         children: <Widget>[_RecipesCard(context), _RecipesCard(context)],
