@@ -9,18 +9,31 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   Future<List<dynamic>> FetchRecipes() async {
-    final url = Uri.parse("https://c5332eb5-1486-4627-acf2-d6c0f27e6fa4.mock.pstmn.io/recipe");
+    // Los puertos para android e ios son distintos
+    // Android 10.0.2.2
+    // iOS 127.0.0.1
+    final url = Uri.parse(
+      "https://c5332eb5-1486-4627-acf2-d6c0f27e6fa4.mock.pstmn.io/recipe",
+    );
     final response = await http.get(url);
     final data = jsonDecode(response.body);
-    return data['recipe'];
+    return data['recetas'];
   }
 
   @override
   Widget build(BuildContext context) {
-    FetchRecipes();
     return Scaffold(
-      body: Column(
-        children: <Widget>[_RecipesCard(context), _RecipesCard(context)],
+      body: FutureBuilder<List<dynamic>>(
+        future: FetchRecipes(),
+        builder: (context, snapshot) {
+          final recipes = snapshot.data ?? [];
+          return ListView.builder(
+            itemCount: recipes!.length,
+            itemBuilder: (context, index) {
+              return _RecipesCard(context, recipes[index]);
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
@@ -46,13 +59,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _RecipesCard(BuildContext context) {
+  Widget _RecipesCard(BuildContext context, dynamic recip) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RecipeDetail(recipeName: "Lasagna"),
+            builder: (context) => RecipeDetail(recipeName: recip['nombre']),
           ),
         );
       },
@@ -73,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                      'https://static.platzi.com/media/uploads/flutter_lasana_b894f1aee1.jpg',
+                      recip['imagen_url'],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -84,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Lasagna",
+                      recip['nombre'],
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Quicksand',
@@ -94,7 +107,7 @@ class HomeScreen extends StatelessWidget {
                     Container(height: 1, width: 75, color: Colors.green),
                     SizedBox(height: 4),
                     Text(
-                      "Jorge U. Chavira",
+                      recip['autor'],
                       style: TextStyle(fontSize: 16, fontFamily: 'Quicksand'),
                     ),
                   ],
