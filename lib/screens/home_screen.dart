@@ -15,9 +15,20 @@ class HomeScreen extends StatelessWidget {
     final url = Uri.parse(
       "https://c5332eb5-1486-4627-acf2-d6c0f27e6fa4.mock.pstmn.io/recipe",
     );
-    final response = await http.get(url);
-    final data = jsonDecode(response.body);
-    return data['recetas'];
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['recetas'];
+      } else {
+        debugPrint('Error ${response.statusCode}');
+        return [];
+      }
+    } on Exception catch (e) {
+      debugPrint("Error in the request");
+      return [];
+    }
+
   }
 
   @override
@@ -27,12 +38,18 @@ class HomeScreen extends StatelessWidget {
         future: FetchRecipes(),
         builder: (context, snapshot) {
           final recipes = snapshot.data ?? [];
-          return ListView.builder(
-            itemCount: recipes!.length,
-            itemBuilder: (context, index) {
-              return _RecipesCard(context, recipes[index]);
-            },
-          );
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text("No available recipes"));
+          } else {
+            return ListView.builder(
+              itemCount: recipes.length,
+              itemBuilder: (context, index) {
+                return _RecipesCard(context, recipes[index]);
+              },
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
