@@ -19,7 +19,10 @@ class Recipe {
       nombre: json['nombre'],
       author: json['autor'],
       image_link: json['imagen_url'],
-      recipeSteps: List<String>.from(json['instrucciones']),
+      recipeSteps:
+          json['instrucciones'] is List
+              ? List<String>.from(json['instrucciones'])
+              : [json['instrucciones'].toString()],
     );
   }
 

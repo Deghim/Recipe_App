@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recipe_book/providers/recipes_provider.dart';
 import 'package:recipe_book/screens/home_screen.dart';
 
 void main() => runApp(MyApp());
@@ -9,10 +11,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Hola mundo",
-      home: RecipeBook(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => RecipesProvider())],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Recipe Book",
+        home: RecipeBook(),
+      ),
     );
   }
 }
