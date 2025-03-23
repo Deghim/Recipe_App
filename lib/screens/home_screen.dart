@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
           final recipes = snapshot.data ?? [];
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasData || snapshot.data!.isEmpty) {
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text("No available recipes"));
           } else {
             return ListView.builder(
