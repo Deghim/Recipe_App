@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_book/providers/recipes_provider.dart';
+import 'package:recipe_book/screens/fav_screen.dart';
 import 'package:recipe_book/screens/home_screen.dart';
 
 void main() => runApp(MyApp());
@@ -28,7 +29,7 @@ class RecipeBook extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 1,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text("Recipe Book", style: TextStyle(color: Colors.white)),
@@ -37,10 +38,18 @@ class RecipeBook extends StatelessWidget {
             indicatorColor: Colors.white,
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white,
-            tabs: [Tab(icon: Icon(CupertinoIcons.home), text: "Home")],
+            tabs: [
+              Tab(icon: Icon(CupertinoIcons.home), text: "Home"),
+              Tab(icon: Icon(CupertinoIcons.heart_circle), text: "Favorites"),
+            ],
           ),
         ),
-        body: TabBarView(children: <Widget>[HomeScreen()]),
+        body: TabBarView(
+          children: <Widget>[
+            HomeScreen(),
+            FavScreen(),
+          ],
+        ),
       ),
     );
   }
