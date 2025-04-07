@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:math';
 
 class Recipe {
+  final int id;
   final String nombre;
   final String author;
   final String image_link;
   final List<String> recipeSteps;
 
   const Recipe({
+    required this.id,
     required this.nombre,
     required this.author,
     required this.image_link,
@@ -16,6 +18,7 @@ class Recipe {
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
+      id: json['id'],
       nombre: json['nombre'],
       author: json['autor'],
       image_link: json['imagen_url'],
@@ -28,6 +31,7 @@ class Recipe {
 
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       "nombre": nombre,
       "autor": author,
       "imagen_url": image_link,
@@ -37,6 +41,6 @@ class Recipe {
 
   @override
   String toString() {
-    return """Recipe{Titulo: $nombre, Autor: $author, linkImagen: $image_link, Pasos: $recipeSteps} """;
+    return """Recipe{Id: $id, Titulo: $nombre, Autor: $author, linkImagen: $image_link, Pasos: $recipeSteps} """;
   }
 }
