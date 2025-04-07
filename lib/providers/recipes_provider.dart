@@ -7,7 +7,8 @@ import 'package:recipe_book/models/recipe_model.dart';
 class RecipesProvider extends ChangeNotifier {
   bool isLoading = false;
   List<Recipe> recipes = [];
- 
+  List<Recipe> favoriteRecipe = [];
+
   Future<void> FetchRecipes() async {
     isLoading = true;
     notifyListeners();
@@ -34,6 +35,32 @@ class RecipesProvider extends ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> toggleFavoriteStatus(Recipe recipe) async {
+    final bool isFavourite = favoriteRecipe.contains(recipe);
+    try {
+      final url = Uri.parse(
+        "https://c5332eb5-1486-4627-acf2-d6c0f27e6fa4.mock.pstmn.io/favorites",
+      );
+
+      final response =
+          isFavourite
+              ? await http.delete(url, body: json.encode({"id": recipe.id}))
+              : await http.post(url, body: json.encode(recipe.toJson()));
+      if (response.statusCode == 200) {
+        if (isFavourite) {
+          favoriteRecipe.remove(recipe);
+        } else {
+          favoriteRecipe.add(recipe);
+        }
+        notifyListeners();
+      } else {
+        throw Exception("Failed to update favourites");
+      }
+    } catch (e) {
+      print('Error updating favorit status $e');
     }
   }
 }
