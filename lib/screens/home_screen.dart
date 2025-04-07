@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => RecipeDetail(recipeName: recip.nombre),
+            builder: (context) => RecipeDetail(recipesData: recip),
           ),
         );
       },
