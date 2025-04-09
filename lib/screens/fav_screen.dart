@@ -46,12 +46,18 @@ class favoriteRecipesCard extends StatelessWidget {
           ),
       child: Card(
         color: Colors.white,
-        child: Column(
+        child: Row(
           children: [
-            Text(recipe.nombre),
-            Text(recipe.author),
-            Text("Hola mama"),
-            Text("Hola mama"),
+            Container(
+              width: 100,
+              height: 125,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(recipe.image_link, fit: BoxFit.cover),
+              ),
+            ),
+            SizedBox(width: 20),
+            Column(children: [Text(recipe.nombre), Text(recipe.author)]),
           ],
         ),
       ),
