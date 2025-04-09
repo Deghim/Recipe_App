@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           if (provider.isLoading) {
             return Center(child: CircularProgressIndicator());
           } else if (provider.recipes.isEmpty) {
-            return const Center(child: Text("No available recipes"));
+            return Center(child: Text(AppLocalizations.of(context)!.noRecipes));
           } else {
             return ListView.builder(
               itemCount: provider.recipes.length,
